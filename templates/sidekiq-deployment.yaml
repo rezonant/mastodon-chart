@@ -22,6 +22,8 @@ spec:
         component: "{{ .Values.sidekiq.name }}"
         release: {{ .Release.Name }}
     spec:
+      securityContext:
+        fsGroup: 991
       containers:
       - name: {{ template "name" . }}-{{ .Values.sidekiq.name }}
         image: "{{ .Values.sidekiq.image }}:{{ .Values.sidekiq.imageTag }}"

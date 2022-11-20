@@ -22,10 +22,12 @@ spec:
         component: "{{ .Values.web.name }}"
         release: {{ .Release.Name }}
     spec:
+      securityContext:
+        fsGroup: 991
       containers:
       - name: {{ template "name" . }}-{{ .Values.web.name }}
         image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
-        imagePullPolicy: {{ .Values.web.imagePullPolicy | quote }}
+        imagePullPolicy: {{ .Values.web.imagePullPolicy | quote }}          
         command:
           - bundle
           - exec

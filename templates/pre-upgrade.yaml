@@ -22,6 +22,8 @@ spec:
         release: {{ .Release.Name }}
     spec:
       restartPolicy: Never
+      securityContext:
+        fsGroup: 991
       containers:
       - name: {{ template "name" . }}-pre-upgrade-job
         image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
