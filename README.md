@@ -1,7 +1,7 @@
 # Mastodon chart
 
-A Helm chart for [Mastodon](https://github.com/tootsuite/mastodon).
-Mastodon is a free, open-source social network server.
+An easy-to-use horizontally scalable Helm chart for [Mastodon](https://github.com/tootsuite/mastodon).
+Mastodon is an open-source decentralized microblogging social network.
 
 This Helm chart is designed/tested with:
 
@@ -10,26 +10,38 @@ This Helm chart is designed/tested with:
 | Mastodon | `tootsuite/mastodon:v3.3.0` |
 | Kubernetes | v1.23 |
 
+# Prerequisites
+
+- A Kubernetes cluster running v1.23+
+- An SMTP relay service 
+    * An option: If you pay for Google Workspace you can send as a Workspace user on a custom domain
+- An S3 bucket and custom domain for serving media (images, cached content, etc)
+    * This can get very large! You will want to pick a cost effective S3 option! It took about 2 weeks to hit 60GB for 
+      me :-)
+
+# Important Notes
+
+This helm chart is tweaked for my own cluster infrastructure services and you'll likely need to do the same for your 
+own setup, depending on what cloud you are running in and what cluster services you have set up. 
+
+In particular, it expects a working `cert-manager` cluster service for acquiring TLS certificates, and expects that you 
+are using Traefik as your ingress controller. If you are using either of the nginx ingress controllers or something else, 
+you will need to edit the Ingress resources appropriately.
+
+Note that the chart will install its own PostgreSQL and Redis servers as single-instance (non-replicated) Deployments. 
+If you want to use StatefulSets, primary/secondary replication, a managed database service, or anything else, you will 
+need to customize the Helm chart to do so.  
+
 # Installation
 
-Copy and edit `secrets.yaml.sample` and `values.yaml.sample` to provide your
-own `secrets.yaml` and `values.yaml` files, and then deploy the Helm chart
-with: 
+Check out this repository, then copy `secrets.yaml.sample` to `secrets.yaml` and `values.yaml.sample` to `values.yaml`,
+and fill in the necessary details.
+
+Once you are ready, deploy the Helm chart with: 
 
 ```
 helm install -f secrets.yaml mastodon .
 ```
-
-# About
-
-This helm chart is tweaked for my own infrastructure services and you'll likely need to do the same for your own setup, depending on
-what cloud you are running in and what cluster services you have set up. 
-
-In particular, it expects a working `cert-manager` cluster service, and expects that you are using Traefik as your ingress controller. If you are
-using either of the nginx ingress controllers or some other mechanism, you will need to edit the Ingress resources appropriately.
-
-The original version of this chart expected that you would use `ReadWriteMany` persistent volumes, mostly for no reason. Most CSI drivers do not 
-support ReadWriteMany persistent volumes. This version of the chart uses only `ReadWriteOnce` volumes.
 
 ### Maintainer
 
