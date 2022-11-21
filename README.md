@@ -46,6 +46,8 @@ Once you are ready, deploy the Helm chart with:
 helm install -f secrets.yaml mastodon .
 ```
 
+Note that `values.yaml` is the default values file for the chart and `secrets.yaml` "overrides" it, but in this chart they are actually unrelated, and both are required in order to install a release.
+
 After it's up and you've made your first account, you can make that user an admin by running the following from 
 within any of the web or sidekiq pods:
 
@@ -56,7 +58,19 @@ tootctl accounts modify YOUR_USERNAME --role=admin
 For more information about `tootctl` (and lots of great information about running your new Mastodon instance), see
 https://docs.joinmastodon.org/admin/tootctl/
 
-# 
+After you have become Admin, you should then disable single user mode. You must do this by changing the values.yaml and then *upgrading* your Helm release.
+
+I recommend acquiring the `helm-diff` plugin and always running a diff to see what you are about to change before running `helm upgrade`:
+
+```
+helm diff upgrade -f secrets.yaml mastodon .
+```
+
+Once you are ready, upgrade with
+
+```
+helm upgrade -f secrets.yaml mastodon .
+```
 
 ### Maintainer
 
