@@ -38,21 +38,9 @@ spec:
           - -b
           - 0.0.0.0
         env:
-{{ include "productonEnvironment" . | indent 8 }}
+{{ include "productionEnvironment" . | indent 8 }}
         ports:
         - name: web
           containerPort: {{ .Values.web.containerPort }}
         resources:
 {{ toYaml .Values.web.resources | indent 10 }}
-        volumeMounts:
-        - name: assets
-          mountPath: /mastodon/public/assets
-        - name: system
-          mountPath: /mastodon/public/system
-      volumes:
-      - name: system
-        persistentVolumeClaim:
-          claimName: {{ template "web.fullname" . }}-system
-      - name: assets
-        persistentVolumeClaim:
-          claimName: {{ template "web.fullname" . }}-assets

@@ -1,7 +1,7 @@
 {{/*
 Production environment for mastodon
 */}}
-{{- define "productonEnvironment" -}}
+{{- define "productionEnvironment" -}}
 - name: REDIS_HOST
   value: "{{ template "redis.fullname" . }}"
 - name: REDIS_PORT
@@ -41,7 +41,7 @@ Production environment for mastodon
 - name: EMAIL_DOMAIN_WHITELIST
   value: "{{ .Values.env.registration.emailDomainWhitelist }}"
 {{- end }}
-- name: DEFAULT_LOCAL
+- name: DEFAULT_LOCALE
   value: "{{ .Values.env.defaultLanguage }}"
 - name: SMTP_SERVER
   value: "{{ .Values.env.smtp.server }}"
@@ -67,27 +67,33 @@ Production environment for mastodon
   value: "{{ .Values.env.assets.paperclipRootUrl }}"
 - name: CDN_HOST
   value: "{{ .Values.env.assets.cdnHost }}"
-{{- end }}
-{{- if .Values.env.s3 -}}
+{{- end -}}
+{{ if .Values.env.s3 }}
 - name: S3_ENABLED
   value: "{{ .Values.env.s3.enabled }}"
 - name: S3_BUCKET
   value: "{{ .Values.env.s3.bucket }}"
 - name: AWS_ACCESS_KEY_ID
-  value: "{{ .Values.env.s3.awsAccessKeyId }}"
+  valueFrom:
+    secretKeyRef:
+      name: {{ template "web.fullname" . }}
+      key: s3AccessKeyId
 - name: AWS_SECRET_ACCESS_KEY
-  value: "{{ .Values.env.s3.awsSecretAccessKey }}"
+  valueFrom:
+    secretKeyRef:
+      name: {{ template "web.fullname" . }}
+      key: s3AccessSecret
 - name: S3_REGION
   value: "{{ .Values.env.s3.region }}"
 - name: S3_PROTOCOL
   value: "{{ .Values.env.s3.protocol }}"
+- name: S3_ENDPOINT
+  value: "{{ .Values.env.s3.endpoint }}"
 - name: S3_HOSTNAME
   value: "{{ .Values.env.s3.hostname }}"
-- name: S3_CLOUDFRONT_HOST
-  value: "{{ .Values.env.s3.cloudfrontHost }}"
-- name: STREAMING_API_BASE_URL
-  value: "{{ .Values.env.s3.streamingApiBaseUrl }}"
-{{- end }}
+- name: S3_ALIAS_HOST
+  value: "{{ .Values.env.s3.aliasHost }}"
+{{ end -}}
 - name: SECRET_KEY_BASE
   valueFrom:
     secretKeyRef:

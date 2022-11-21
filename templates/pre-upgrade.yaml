@@ -31,15 +31,8 @@ spec:
         command: ["/bin/sh"]
         args:
           - "-c"
-          - "bundle exec rails db:migrate && bundle exec rails assets:precompile"
+          - "bundle exec rails db:migrate"
         env:
         - name: SKIP_POST_DEPLOYMENT_MIGRATIONS
           value: "true"
-{{ include "productonEnvironment" . | indent 8 }}
-        volumeMounts:
-        - name: assets
-          mountPath: /mastodon/public/assets
-      volumes:
-      - name: assets
-        persistentVolumeClaim:
-          claimName: {{ template "web.fullname" . }}-assets
+{{ include "productionEnvironment" . | indent 8 }}

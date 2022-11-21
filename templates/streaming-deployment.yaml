@@ -31,7 +31,7 @@ spec:
           - run
           - start
         env:
-{{ include "productonEnvironment" . | indent 8 }}
+{{ include "productionEnvironment" . | indent 8 }}
         ports:
         - name: streaming
           containerPort: {{ .Values.streaming.containerPort }}

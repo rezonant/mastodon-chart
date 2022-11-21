@@ -3,7 +3,7 @@ env:
   registration: {}
   # emailDomainBlacklist: "example1.com|example2.com"
   # emailDomainWhitelist: "example1.com|example2.com"
-  defaultLanguage: "ja"
+  defaultLanguage: "en"
   smtp:
     server: "YOUR_SMTP_SERVER"
     port: "587"
@@ -16,15 +16,13 @@ env:
   # paperclipRootUrl: "system"
   # cdnHost: "assets.example.com"
   s3: {}
-  # enabled: "true"
-  # bucket: "dummy"
-  # awsAccessKeyId: "dummy"
-  # awsSecretAccessKey: "dummy"
-  # region: "dummy"
-  # protocol: "http"
-  # hostname: "192.168.1.123:9000"
-  # cloudfrontHost: "dummy"
-  # streamingApiBaseUrl: "dummy"
+    enabled: "true"
+    bucket: "bucketname"
+    region: "sfo3"
+    endpoint: "https://sfo3.digitaloceanspaces.com"
+    protocol: "https"
+    hostname: "sfo3.digitaloceanspaces.com"
+    aliasHost: "mycdn.example.com"
 
 httpd:
   name: assets
@@ -49,13 +47,6 @@ web:
   maintenanceHour: 3
   ingress:
     host: SET_YOUR_DOMAIN
-  persistentVolume:
-    system:
-      accessMode: ReadWriteMany
-      size: 8Gi
-    assets:
-      accessMode: ReadWriteMany
-      size: 8Gi
   resources:
     requests:
       memory: 256Mi
@@ -77,14 +68,7 @@ sidekiq:
   image: tootsuite/mastodon
   imageTag: v3.3.0
   imagePullPolicy: IfNotPresent
-  defaultQparallelism: 2
-  pullQparallelism: 5
-  pushQparallelism: 2
-  mailersQparallelism: 2
-  defaultQreplicas: 1
-  pullQreplicas: 1
-  pushQreplicas: 1
-  mailersQreplicas: 1
+  parallelism: 4
   resources:
     requests:
       memory: 256Mi
@@ -96,9 +80,8 @@ redis:
   imagePullPolicy: IfNotPresent
   servicePort: 6379
   containerPort: 6379
-  # You need to create PV beforehead.
   persistentVolume:
-    accessMode: ReadWriteMany
+    accessMode: ReadWriteOnce
     size: 8Gi
   resources:
     requests:
@@ -116,9 +99,8 @@ postgres:
     pguser: "postgres"
     postgres_db: ""
     pgdata: "/var/lib/postgresql/data/pgdata"
-  # You need to create PV beforehead.
   persistentVolume:
-    accessMode: ReadWriteMany
+    accessMode: ReadWriteOnce
     size: 8Gi
   resources:
     requests:

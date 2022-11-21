@@ -27,7 +27,7 @@ spec:
             - "-c"
             - "tootctl media remove --days={{ .Values.web.keepMediaDays }} && tootctl statuses remove"
             env:
-{{ include "productonEnvironment" . | indent 12 }}
+{{ include "productionEnvironment" . | indent 12 }}
             volumeMounts:
             - name: assets
               mountPath: /mastodon/public/assets

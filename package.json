@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "install": "helm install -n mastodon -f ./secrets.yaml mastodon .",
+        "uninstall": "helm x-uninstall -n mastodon mastodon",
+        "upgrade": "helm upgrade -n mastodon -f ./secrets.yaml mastodon .",
+        "diff": "helm diff upgrade -n mastodon -f ./secrets.yaml mastodon ."
+    }
+}
