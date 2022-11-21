@@ -43,6 +43,8 @@ spec:
           - -q
           - push
           - -q
+          - ingress
+          - -q
           - scheduler
         env:
 {{ include "productionEnvironment" . | indent 8 }}
