@@ -37,11 +37,26 @@ need to customize the Helm chart to do so.
 Check out this repository, then copy `secrets.yaml.sample` to `secrets.yaml` and `values.yaml.sample` to `values.yaml`,
 and fill in the necessary details.
 
+Note that you will probably want to leave single-user mode *enabled* to begin with while you get everything set up, and
+to make it easy to create your admin account.
+
 Once you are ready, deploy the Helm chart with: 
 
 ```
 helm install -f secrets.yaml mastodon .
 ```
+
+After it's up and you've made your first account, you can make that user an admin by running the following from 
+within any of the web or sidekiq pods:
+
+```
+tootctl accounts modify YOUR_USERNAME --role=admin
+```
+
+For more information about `tootctl` (and lots of great information about running your new Mastodon instance), see
+https://docs.joinmastodon.org/admin/tootctl/
+
+# 
 
 ### Maintainer
 
