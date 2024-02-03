@@ -7,7 +7,7 @@ This Helm chart is designed/tested with:
 
 | Package | Version |
 | ------- | ------- |
-| Mastodon | `tootsuite/mastodon:v3.3.0` |
+| Mastodon | `tootsuite/mastodon:v4.2.5` |
 | Kubernetes | v1.23 |
 
 # Prerequisites
